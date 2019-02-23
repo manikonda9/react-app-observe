@@ -1,5 +1,5 @@
 {
-  "name": "redux-observable",
+  "name": "react-app-observable",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,5 +21,13 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-observable": "^1.0.0",
+    "rxjs": "^6.4.0",
+    "rxjs-compat": "^6.4.0"
+  }
 }
