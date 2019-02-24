@@ -1,34 +1,34 @@
 import {
-    FETCH_WHISKIES,
-    FETCH_WHISKIES_FAILURE,
-    FETCH_WHISKIES_SUCCESS
+    FETCH_PHOTOS,
+    FETCH_PHOTOS_FAILURE,
+    FETCH_PHOTOS_SUCCESS
 } from '../actions';
 
 const initialState = {
-    whiskies: [],
+    photos: [],
     isLoading: false,
     error: null
 };
 
-const whyskyReducer = (state = initialState, action) => {
+const photoReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_WHISKIES:
+        case FETCH_PHOTOS:
             return {
                 ...state,
                 // whenever we want to fetch the whiskies, set isLoading to true to show a spinner
                 isLoading: true,
                 error: null
             };
-        case FETCH_WHISKIES_SUCCESS:
+        case FETCH_PHOTOS_SUCCESS:
             return {
-                whiskies: [...action.payload],
+                photos: [...action.payload],
                 // whenever the fetching finishes, we stop showing the spinner and then show the data
                 isLoading: false,
                 error: null
             };
-        case FETCH_WHISKIES_FAILURE:
+        case FETCH_PHOTOS_FAILURE:
             return {
-                whiskies: [],
+                photos: [],
                 isLoading: false,
                 // same as FETCH_WHISKIES_SUCCESS, but instead of data we will show an error message
                 error: action.payload
@@ -38,4 +38,4 @@ const whyskyReducer = (state = initialState, action) => {
     }
 }
 
-export default whyskyReducer;
+export default photoReducer;

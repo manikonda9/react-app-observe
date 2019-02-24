@@ -7,11 +7,16 @@ import { ajax } from 'rxjs/observable/dom/ajax';
 import {
     FETCH_WHISKIES,
     fetchWhiskiesFailure,
-    fetchWhiskiesSuccess
+    fetchWhiskiesSuccess,
+    FETCH_PHOTOS,
+    fetchPhotosFailure,
+    fetchPhotosSuccess
 } from "../actions";
 import { combineEpics } from 'redux-observable';
 
 const url = 'https://evening-citadel-85778.herokuapp.com/whiskey/'; // The API for the whiskies
+
+const photosUrl = 'https://jsonplaceholder.typicode.com/photos'; // The API for the photos
 /*
     The API returns the data in the following format:
     {
@@ -25,7 +30,6 @@ const url = 'https://evening-citadel-85778.herokuapp.com/whiskey/'; // The API f
 
 const fetchWhiskiesEpic = (action$) => { // action$ is a stream of actions
     // action$.ofType is the outer Observable
-    console.log(action$)
     return action$
         .ofType(FETCH_WHISKIES) // ofType(FETCH_WHISKIES) is just a simpler version of .filter(x => x.type === FETCH_WHISKIES)
         .switchMap(() => {
@@ -48,4 +52,21 @@ const fetchWhiskiesEpic = (action$) => { // action$ is a stream of actions
         .catch(error => Observable.of(fetchWhiskiesFailure(error.message)))
 }
 
-export const rootEpic = combineEpics(fetchWhiskiesEpic);
+const fetchPhotosEpic = (action$) =>{
+    return action$
+            .ofType(FETCH_PHOTOS)
+            .switchMap(()=>{
+                return ajax
+                .getJSON(photosUrl)
+                .map(data => data.results)
+                .map(photos => photos.map(photo => ({
+                    id: photo.id,
+                    title: photo.title,
+                    imageUrl: photo.url
+                })))
+                .map(photos => photos.filter(photo => photo.id<22))
+            })
+            .map(photos => fetchPhotosSuccess(photos))
+            .catch(error => Observable.of(fetchPhotosFailure(error.message)))
+}
+export const rootEpic = combineEpics(fetchWhiskiesEpic,fetchPhotosEpic);
